@@ -15,11 +15,11 @@ jobs:
     steps:
       # 1. Checkout repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       # 2. Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -33,16 +33,16 @@ jobs:
 
       # 5. Publish Jest JUnit report for dashboard
       - name: Publish Jest test results
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
           path: reports/junit/jest-junit.xml
           reporter: junit
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
 
       # 6. Upload coverage report as artifact
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage

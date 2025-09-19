@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]3
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -24,8 +24,8 @@ jobs:
             npm install
             npm install --save-dev jest supertest
 
-      - name: Run tests with coverage
-        run: npm test -- --coverage
+    #   - name: Run tests with coverage
+    #     run: npm test -- --coverage
 
       - name: Jest coverage report
         uses: ArtiomTr/jest-coverage-report-action@v2

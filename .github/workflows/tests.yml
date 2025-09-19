@@ -43,7 +43,7 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
-          path: 'reports/junit.xml'
+          path: 'reports/junit/*.xml'
           reporter: jest-junit
           token: ${{ github.token }}
 

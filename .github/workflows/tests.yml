@@ -27,9 +27,23 @@ jobs:
         run: npm install
 
       - name: Run tests with coverage
-        run: npm test -- --coverage
+        run: npx jest --coverage --json --outputFile=coverage/report.json
 
-      - name: Jest coverage report
-        uses: ArtiomTr/jest-coverage-report-action@v2
+      - name: Extract coverage summary
+        id: coverage_summary
+        run: |
+          SUMMARY=$(jq -r '.coverageMap["server.js"].lines.pct' coverage/report.json)
+          echo "SUMMARY_REPORT=Coverage lines: $SUMMARY%" >> $GITHUB_ENV
+          echo "Coverage summary: $SUMMARY%"
+
+      - name: Show summary report
+        run: |
+            echo "The coverage summary is: $SUMMARY_REPORT"
+
+      - name: Upload coverage folder
+        uses: actions/upload-artifact@v3
         with:
-          github-token: ${{ secrets.ACTIONS_TOKEN }}
+          name: coverage-report
+          path: coverage
+
+

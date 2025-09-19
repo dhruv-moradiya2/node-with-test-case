@@ -1,44 +1,48 @@
-name: Node.js CI
+name: Node.js CI with Jest
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
 
+    steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v3
         with:
           node-version: 22
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests with coverage
-        run: | 
-          npm test
-          ls -la 
-          ls -la coverage
-          tree coverage
+      # 4. Run Jest tests with coverage
+      - name: Run Jest tests
+        run: npm test
 
-      - name: Show summary report
-        run: |
-          echo "The coverage summary is: $SUMMARY_REPORT"
+      # 5. Publish Jest JUnit report for dashboard
+      - name: Publish Jest test results
+        uses: dorny/test-reporter@v1
+        with:
+          name: Jest Tests
+          path: reports/junit/jest-junit.xml
+          reporter: junit
+          token: ${{ github.token }}
 
-      - name: Upload coverage folder
-        uses: actions/upload-artifact@v4
+      # 6. Upload coverage report as artifact
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: coverage
-
-      - name: Upload coverage summary
-        run: echo "SUMMARY_REPORT=$(cat coverage/lcov-report/index.html)" >> $GITHUB_STEP_SUMMARY

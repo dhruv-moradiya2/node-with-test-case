@@ -34,14 +34,16 @@ jobs:
 
       # 4. Run Jest tests with coverage
       - name: Run Jest tests
-        run: npm test
+        run: |
+          npm test
+          ls -la reports
 
       # 5. Publish Jest JUnit report for dashboard
       - name: Publish Jest test results
         uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
-          path: 'coverage/*.xml'
+          path: 'reports/junit.xml'
           reporter: jest-junit
           token: ${{ github.token }}
 

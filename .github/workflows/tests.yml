@@ -45,7 +45,7 @@ jobs:
           name: Jest Tests
           path: 'reports/junit/*.xml'
           reporter: jest-junit
-          token: ${{ github.token }}
+#          token: ${{ github.token }}
 
       # 6. Upload coverage report as artifact
       - name: Upload coverage report

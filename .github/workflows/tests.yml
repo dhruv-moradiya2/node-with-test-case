@@ -29,4 +29,4 @@ jobs:
       - name: Jest coverage report
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          github-token: ${{ secrets.TEST_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

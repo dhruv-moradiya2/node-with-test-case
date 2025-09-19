@@ -28,7 +28,10 @@ jobs:
         run: npm install
 
       - name: Run tests with coverage
-        run: npx jest --coverage --json --outputFile=coverage/report.json
+        run: | 
+          npx jest --coverage --json --outputFile=coverage/report.json
+          ls -la 
+          ls -la coverage
 
       - name: Extract coverage summary
         id: coverage_summary

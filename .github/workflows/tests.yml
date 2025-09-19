@@ -5,7 +5,6 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
   test:
@@ -17,12 +16,13 @@ jobs:
       checks: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install dependencies
         run: npm install
@@ -33,12 +33,23 @@ jobs:
       - name: Extract coverage summary
         id: coverage_summary
         run: |
-          SUMMARY=$(jq -r '.coverageMap["server.js"].lines.pct' coverage/report.json)
-          echo "SUMMARY_REPORT=Coverage lines: $SUMMARY%" >> $GITHUB_ENV
+          # Grab the first file in coverageMap
+          COVERAGE=$(jq -r '.coverageMap | to_entries[0].value' coverage/report.json)
+          LINES=$(echo "$COVERAGE" | jq -r '.lines.pct')
+          STATEMENTS=$(echo "$COVERAGE" | jq -r '.statements.pct')
+          FUNCTIONS=$(echo "$COVERAGE" | jq -r '.functions.pct')
+          BRANCHES=$(echo "$COVERAGE" | jq -r '.branches.pct')
+
+          # Set environment variable for later steps
+          echo "SUMMARY_REPORT=Lines: $LINES%, Statements: $STATEMENTS%, Functions: $FUNCTIONS%, Branches: $BRANCHES%" >> $GITHUB_ENV
+
+          # Write to workflow summary
           echo "## Jest Coverage Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Lines coverage: $SUMMARY%" >> $GITHUB_STEP_SUMMARY
+          echo "- Lines coverage: $LINES%" >> $GITHUB_STEP_SUMMARY
+          echo "- Statements coverage: $STATEMENTS%" >> $GITHUB_STEP_SUMMARY
+          echo "- Functions coverage: $FUNCTIONS%" >> $GITHUB_STEP_SUMMARY
+          echo "- Branches coverage: $BRANCHES%" >> $GITHUB_STEP_SUMMARY
           echo "- Coverage folder: \`coverage/\`" >> $GITHUB_STEP_SUMMARY
-          echo "Coverage summary: $SUMMARY%"
 
       - name: Show summary report
         run: |

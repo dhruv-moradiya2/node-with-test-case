@@ -7,6 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -36,8 +41,8 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
-          path: coverage/clover.xml
-          reporter: github-pr-check
+          path: '*.xml'
+          reporter: jest-junit
           token: ${{ github.token }}
 
       # 6. Upload coverage report as artifact

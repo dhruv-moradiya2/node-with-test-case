@@ -53,3 +53,9 @@ jobs:
         with:
           name: coverage-report
           path: coverage
+      
+      - name: remove coverage report
+        run: | 
+          rm -rf coverage
+          rm -rf reports
+          ls -la

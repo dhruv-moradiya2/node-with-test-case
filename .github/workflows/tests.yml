@@ -36,8 +36,8 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
-          path: cloverage/clover.xml
-          reporter: junit
+          path: reports/junit/jest-junit.xml
+          reporter: github-pr-check
           token: ${{ github.token }}
 
       # 6. Upload coverage report as artifact

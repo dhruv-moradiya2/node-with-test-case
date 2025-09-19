@@ -29,7 +29,7 @@ jobs:
 
       - name: Run tests with coverage
         run: | 
-          npx jest --coverage --json --outputFile=coverage/report.json
+          npx jest --coverage
           ls -la 
           ls -la coverage
 

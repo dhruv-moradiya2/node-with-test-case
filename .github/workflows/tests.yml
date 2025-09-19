@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -34,16 +35,17 @@ jobs:
         run: |
           SUMMARY=$(jq -r '.coverageMap["server.js"].lines.pct' coverage/report.json)
           echo "SUMMARY_REPORT=Coverage lines: $SUMMARY%" >> $GITHUB_ENV
+          echo "## Jest Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Lines coverage: $SUMMARY%" >> $GITHUB_STEP_SUMMARY
+          echo "- Coverage folder: \`coverage/\`" >> $GITHUB_STEP_SUMMARY
           echo "Coverage summary: $SUMMARY%"
 
       - name: Show summary report
         run: |
-            echo "The coverage summary is: $SUMMARY_REPORT"
+          echo "The coverage summary is: $SUMMARY_REPORT"
 
       - name: Upload coverage folder
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage
-
-

@@ -41,7 +41,7 @@ jobs:
             echo "The coverage summary is: $SUMMARY_REPORT"
 
       - name: Upload coverage folder
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage

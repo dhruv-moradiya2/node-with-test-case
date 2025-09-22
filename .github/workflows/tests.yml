@@ -35,6 +35,9 @@ jobs:
       # 4. Run Jest tests with coverage
       - name: Run Jest tests
         run: |
+          echo "#############################"
+          pwd
+          echo "#############################"
           npm test
           ls -la reports
 

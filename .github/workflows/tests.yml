@@ -35,13 +35,13 @@ jobs:
       # 4. Run Jest tests with coverage
       - name: Run Jest tests
         run: |
+          npm test
           echo ${{ github.workspace }}
           cd coverage
           ls -la
           echo "#############################"
           pwd
           echo "#############################"
-          npm test
 
       - name: check test 
         run: |

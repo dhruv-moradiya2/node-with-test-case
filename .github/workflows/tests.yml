@@ -45,8 +45,10 @@ jobs:
 
       - name: check test 
         run: |
-          pwd
+          touch .env.prouduction
           ls -la
+          echo ${{ secrets.DEV_ENV }} >> .env.production
+          cat .env.production
 
       # 5. Publish Jest JUnit report for dashboard
       - name: Publish Jest test results

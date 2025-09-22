@@ -36,11 +36,17 @@ jobs:
       - name: Run Jest tests
         run: |
           echo ${{ github.workspace }}
+          cd coverage
+          ls -la
           echo "#############################"
           pwd
           echo "#############################"
           npm test
-          ls -la reports
+
+      - name: check test 
+        run: |
+          pwd
+          ls -la
 
       # 5. Publish Jest JUnit report for dashboard
       - name: Publish Jest test results

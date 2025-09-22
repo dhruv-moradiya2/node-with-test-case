@@ -45,7 +45,7 @@ jobs:
 
       - name: check test 
         run: |
-          touch .env.prouduction
+          touch .env.production
           ls -la
           echo ${{ secrets.DEV_ENV }} >> .env.production
           cat .env.production

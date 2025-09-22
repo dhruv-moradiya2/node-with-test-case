@@ -47,6 +47,7 @@ jobs:
         run: |
           echo "${{ secrets.DEV_ENV }}" > .env.production
           cat .env.production
+          echo $GITHUB_REF_NAME 
 
       # 5. Publish Jest JUnit report for dashboard
       - name: Publish Jest test results

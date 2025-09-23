@@ -21,6 +21,7 @@ jobs:
         run: |
           echo ${{ secrets.PROD_ENV }} > .env
           ls -la
+          cat .env
           echo "CI: $CI - Whether the workflow is running in a CI environment"
           echo ""
           echo "GITHUB_REF_NAME: $GITHUB_REF_NAME - The branch or tag name that triggered the workflow"

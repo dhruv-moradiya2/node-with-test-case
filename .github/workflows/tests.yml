@@ -36,6 +36,7 @@ jobs:
       - name: Run Jest tests
         run: |
           npm test >> covrage.txt
+          ls -la
           mv covrage.txt coverage/
           echo ${{ github.workspace }}
           cd coverage

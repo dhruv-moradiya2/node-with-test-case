@@ -16,95 +16,55 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+
     steps:
+      # 1. Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Run Jest tests with coverage
+      - name: Run Jest tests
+        run: |
+          npm test
+          echo ${{ github.workspace }}
+          cd coverage
+          ls -la
+          echo "#############################"
+          pwd
+          echo "#############################"
       - name: check test 
         run: |
-          echo ${{ secrets.PROD_ENV }} > .env
+          echo "${{ secrets.DEV_ENV }}" > .env.production
+          cat .env.production
+      # 5. Publish Jest JUnit report for dashboard
+      - name: Publish Jest test results
+        uses: dorny/test-reporter@v2
+        with:
+          name: Jest Tests
+          path: 'reports/junit/*.xml'
+          reporter: jest-junit
+#          token: ${{ github.token }}
+
+      # 6. Upload coverage report as artifact
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+      
+      - name: remove coverage report
+        run: | 
+          rm -rf coverage
+          rm -rf reports
+          rm coverage.txt
           ls -la
-          cat .env
-          echo "CI: $CI - Whether the workflow is running in a CI environment"
-          echo ""
-          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME - The branch or tag name that triggered the workflow"
-          echo ""
-          echo "GITHUB_ACTION: $GITHUB_ACTION - The name of the action currently running"
-          echo ""
-          echo "GITHUB_ACTION_PATH: $GITHUB_ACTION_PATH - Path to the action directory"
-          echo ""
-          echo "GITHUB_ACTION_REPOSITORY: $GITHUB_ACTION_REPOSITORY - The repository containing the action"
-          echo ""
-          echo "GITHUB_ACTIONS: $GITHUB_ACTIONS - Always true when running in GitHub Actions"
-          echo ""
-          echo "GITHUB_ACTOR: $GITHUB_ACTOR - Username of the person who triggered the workflow"
-          echo ""
-          echo "GITHUB_ACTOR_ID: $GITHUB_ACTOR_ID - ID of the user who triggered the workflow"
-          echo ""
-          echo "GITHUB_API_URL: $GITHUB_API_URL - The base URL for GitHub's REST API"
-          echo ""
-          echo "GITHUB_BASE_REF: $GITHUB_BASE_REF - The base branch for pull requests"
-          echo ""
-          echo "GITHUB_ENV: $GITHUB_ENV - File to set environment variables for future steps"
-          echo ""
-          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME - Name of the event that triggered the workflow"
-          echo ""
-          echo "GITHUB_EVENT_PATH: $GITHUB_EVENT_PATH - Path to the file containing the full webhook event payload"
-          echo ""
-          echo "GITHUB_GRAPHQL_URL: $GITHUB_GRAPHQL_URL - The endpoint for GitHub's GraphQL API"
-          echo ""
-          echo "GITHUB_HEAD_REF: $GITHUB_HEAD_REF - The head branch of a pull request"
-          echo ""
-          echo "GITHUB_JOB: $GITHUB_JOB - The ID of the current job"
-          echo ""
-          echo "GITHUB_OUTPUT: $GITHUB_OUTPUT - File to set output parameters for the current step"
-          echo ""
-          echo "GITHUB_PATH: $GITHUB_PATH - File to add directories to the PATH environment variable"
-          echo ""
-          echo "GITHUB_REF: $GITHUB_REF - The branch or tag ref that triggered the workflow"
-          echo ""
-          echo "GITHUB_REF_PROTECTED: $GITHUB_REF_PROTECTED - Whether the ref is protected"
-          echo ""
-          echo "GITHUB_REF_TYPE: $GITHUB_REF_TYPE - The type of ref (branch or tag)"
-          echo ""
-          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY - The owner/repository name"
-          echo ""
-          echo "GITHUB_REPOSITORY_OWNER: $GITHUB_REPOSITORY_OWNER - Owner of the repository"
-          echo ""
-          echo "GITHUB_REPOSITORY_OWNER_ID: $GITHUB_REPOSITORY_OWNER_ID - ID of the repository owner"
-          echo ""
-          echo "GITHUB_RETENTION_DAYS: $GITHUB_RETENTION_DAYS - Number of days to retain workflow logs and artifacts"
-          echo ""
-          echo "GITHUB_RUN_ATTEMPT: $GITHUB_RUN_ATTEMPT - The current attempt number of the workflow run"
-          echo ""
-          echo "GITHUB_RUN_ID: $GITHUB_RUN_ID - Unique ID of the workflow run"
-          echo ""
-          echo "GITHUB_RUN_NUMBER: $GITHUB_RUN_NUMBER - The unique number of the workflow run in the repository"
-          echo ""
-          echo "GITHUB_SERVER_URL: $GITHUB_SERVER_URL - Base URL of the GitHub instance"
-          echo ""
-          echo "GITHUB_SHA: $GITHUB_SHA - The commit SHA that triggered the workflow"
-          echo ""
-          echo "GITHUB_STEP_SUMMARY: $GITHUB_STEP_SUMMARY - File to write markdown summaries for a step"
-          echo ""
-          echo "GITHUB_TRIGGERING_ACTOR: $GITHUB_TRIGGERING_ACTOR - Actor that triggered the workflow (may differ from GITHUB_ACTOR in some cases)"
-          echo ""
-          echo "GITHUB_WORKFLOW: $GITHUB_WORKFLOW - Name of the workflow"
-          echo ""
-          echo "GITHUB_WORKFLOW_REF: $GITHUB_WORKFLOW_REF - Reference of the workflow file"
-          echo ""
-          echo "GITHUB_WORKFLOW_SHA: $GITHUB_WORKFLOW_SHA - SHA of the workflow file"
-          echo ""
-          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE - The GitHub Actions workspace directory"
-          echo ""
-          echo "RUNNER_ARCH: $RUNNER_ARCH - Architecture of the runner (e.g., X64)"
-          echo ""
-          echo "RUNNER_DEBUG: $RUNNER_DEBUG - Whether debug logging is enabled for the runner"
-          echo ""
-          echo "RUNNER_ENVIRONMENT: $RUNNER_ENVIRONMENT - Environment assigned to the runner"
-          echo ""
-          echo "RUNNER_NAME: $RUNNER_NAME - Name of the runner executing the job"
-          echo ""
-          echo "RUNNER_OS: $RUNNER_OS - Operating system of the runner"
-          echo ""
-          echo "RUNNER_TEMP: $RUNNER_TEMP - Directory for temporary files"
-          echo ""
-          echo "RUNNER_TOOL_CACHE: $RUNNER_TOOL_CACHE - Directory for cached tools"
-          echo ""

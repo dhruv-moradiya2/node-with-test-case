@@ -35,7 +35,8 @@ jobs:
       # 4. Run Jest tests with coverage
       - name: Run Jest tests
         run: |
-          npm test
+          npm test >> covrage.txt
+          mv covrage.txt ./ coverage/
           echo ${{ github.workspace }}
           cd coverage
           ls -la

@@ -43,7 +43,7 @@ jobs:
           echo "#############################"
           pwd
           echo "#############################"
-          zip -r coverage-report.zip coverage
+          zip -r coverage-report.zip . -i coverage
           ls -la
           
       - name: check test 

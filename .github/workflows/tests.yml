@@ -15,8 +15,6 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-
     steps:
       # 1. Checkout repository
       - name: Checkout code
@@ -70,5 +68,3 @@ jobs:
         run: | 
           rm -rf coverage
           rm -rf reports
-          rm coverage.txt
-          ls -la

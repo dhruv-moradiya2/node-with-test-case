@@ -62,3 +62,11 @@ jobs:
         run: | 
           rm -rf coverage
           rm -rf reports
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v5
+      - name: check code 
+        run: ls -la

@@ -64,7 +64,7 @@ jobs:
           rm -rf reports
 
   deploy:
-    needs: [ test ]
+    if: jobs.test.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: checkout code

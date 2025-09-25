@@ -67,7 +67,7 @@ jobs:
   deploy:
     needs: [ test ]
     runs-on: ubuntu-latest
-    if: needs.test.result == 'success'
+    if: success()
     steps:
       - name: checkout code
         uses: actions/checkout@v5

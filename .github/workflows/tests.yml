@@ -41,6 +41,7 @@ jobs:
         run: |
           echo "${{ secrets.DEV_ENV }}" > .env.production
           cat .env.production
+
       # 5. Publish Jest JUnit report for dashboard
       - name: Publish Jest test results
         uses: dorny/test-reporter@v2
@@ -64,11 +65,14 @@ jobs:
           rm -rf reports
 
   deploy:
-    if: jobs.test.result == 'success'
     runs-on: ubuntu-latest
+    if: needs.test.result == 'success'
     steps:
       - name: checkout code
         uses: actions/checkout@v5
+
+      - name: check code
+        run: ls -la
         
       - name: check code 
         run: ls -la

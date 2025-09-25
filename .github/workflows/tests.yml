@@ -32,20 +32,10 @@ jobs:
 
       # 4. Run Jest tests with coverage
       - name: Run Jest tests
+        id: hello
         run: |
-          npm test >> coverage.txt 
-          cat coverage.txt 
-          ls -la
-          mv coverage.txt coverage/
+          npm test
           echo ${{ github.workspace }}
-          cd coverage
-          ls -la
-          echo "#############################"
-          pwd
-          echo "#############################"
-          cd ..
-          zip -r coverage-report.zip coverage
-          ls -la
           
       - name: check test 
         run: |
@@ -62,10 +52,11 @@ jobs:
 
       # 6. Upload coverage report as artifact
       - name: Upload coverage report
+        if: steps.hello.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage-report.zip
+          path: coverage
       
       - name: remove coverage report
         run: | 

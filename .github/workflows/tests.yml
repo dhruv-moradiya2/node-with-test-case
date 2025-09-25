@@ -65,6 +65,7 @@ jobs:
           rm -rf reports
 
   deploy:
+    needs: [ test ]
     runs-on: ubuntu-latest
     if: needs.test.result == 'success'
     steps:

@@ -7,11 +7,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  actions: read
-  checks: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -35,7 +30,6 @@ jobs:
         id: hello
         run: |
           npm test
-          echo ${{ github.workspace }}
           
       - name: check test 
         run: |
@@ -47,7 +41,7 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
-          path: 'reports/junit/*.xml'
+          path: 'reports/juni/*.xml'
           reporter: jest-junit
 #          token: ${{ github.token }}
 

@@ -64,9 +64,11 @@ jobs:
           rm -rf reports
 
   deploy:
+    needs: [ test ]
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
         uses: actions/checkout@v5
+        
       - name: check code 
         run: ls -la

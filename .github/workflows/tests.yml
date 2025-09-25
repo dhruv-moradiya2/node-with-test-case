@@ -74,6 +74,3 @@ jobs:
 
       - name: check code
         run: ls -la
-        
-      - name: check code 
-        run: ls -la

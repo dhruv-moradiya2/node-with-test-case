@@ -41,7 +41,7 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: Jest Tests
-          path: 'reports/junit/*.xml'
+          path: 'reports/junt/*.xml'
           reporter: jest-junit
 #          token: ${{ github.token }}
 
@@ -61,7 +61,6 @@ jobs:
   deploy:
     needs: [ test ]
     runs-on: ubuntu-latest
-    if: success()
     steps:
       - name: checkout code
         uses: actions/checkout@v5

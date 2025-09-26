@@ -33,7 +33,7 @@ jobs:
           ls -la
 
       - name: List installed Xcodes
-        run: ls /Applications | grep
+        run: ls /Applications | grep Xcode
 
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1

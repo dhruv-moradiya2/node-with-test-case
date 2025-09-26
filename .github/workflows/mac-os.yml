@@ -1,1 +1,34 @@
+name: setup macos for ios app
 
+on:
+  push:
+    branches: main
+  workflow_dispatch:
+
+jobs:
+  setup-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+         ruby-version: '3.4'
+
+      - name: check node and ruby version
+        run: |
+          gem install cocoapods
+          pod --version
+          node -v
+          npm -v 
+          ruby -v
+
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode_13.2.1.app
+        
+      - name: Xcode Version
+        run: /usr/bin/xcodebuild -version

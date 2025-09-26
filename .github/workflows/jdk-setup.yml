@@ -20,5 +20,6 @@ jobs:
         - name: run on java code
           run: | 
             java --version
+            echo 
             javac --version
-            java -cp java HelloWorldApp
+  

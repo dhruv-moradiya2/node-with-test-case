@@ -49,3 +49,6 @@ jobs:
 
       - name: Xcode Version
         run: xcodebuild -version
+
+      - name: check xcode
+        run: ls /Applications | grep Xcode

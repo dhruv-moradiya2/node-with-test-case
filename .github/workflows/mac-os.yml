@@ -26,6 +26,9 @@ jobs:
           node -v
           npm -v
           ruby -v
+          ls -la
+          cd /
+          ls -la
 
       - name: List installed Xcodes
         run: ls /Applications | grep Xcode

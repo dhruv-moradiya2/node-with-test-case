@@ -7,11 +7,11 @@ on:
 
 jobs:
     # stage 1: build and test the application
-    build-setup:
+    build-setup-oracle:
         runs-on: ubuntu-latest
         steps:
         # step 1: checkout the code from the repository
-        - name: Checkout code
+        - name: setup-java
           uses: actions/setup-java@v5
           with:
             distribution: 'oracle'
@@ -20,6 +20,20 @@ jobs:
         - name: run on java code
           run: | 
             java --version
-            echo 
+            echo "####################"
             javac --version
-  
+
+    build-setup-temurin:
+        runs-on: ubuntu-latest
+        steps:
+          - name: setup-java
+            uses: actions/setup-java@5
+            with:
+              distribution: 'temurin'
+              java-version: '17'
+
+          - name: run on java code
+            run: |
+              java --version
+              echo "##########################"
+              javac --varsion

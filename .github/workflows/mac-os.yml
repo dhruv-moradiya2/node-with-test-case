@@ -17,18 +17,23 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-         ruby-version: '3.4'
+          ruby-version: '3.4'
 
-      - name: check node and ruby version
+      - name: Check Node, Ruby, CocoaPods
         run: |
           gem install cocoapods
           pod --version
           node -v
-          npm -v 
+          npm -v
           ruby -v
 
-      - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_13.2.1.app
-        
+      - name: List installed Xcodes
+        run: ls /Applications | grep Xcode
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
       - name: Xcode Version
-        run: /usr/bin/xcodebuild -version
+        run: xcodebuild -version

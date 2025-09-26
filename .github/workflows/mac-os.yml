@@ -42,10 +42,10 @@ jobs:
       - name: List installed Xcodes
         run: ls /Applications | grep Xcode
 
-      - name: Setup Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
+      # - name: Setup Xcode
+      #   uses: maxim-lobanov/setup-xcode@v1
+      #   with:
+      #     xcode-version: latest-stable
 
       - name: Xcode Version
         run: xcodebuild -version

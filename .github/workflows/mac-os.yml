@@ -26,11 +26,18 @@ jobs:
           node -v
           npm -v
           ruby -v
+          echo " "
           ls -la
+          echo " "
           cd /
+          echo " "
           ls -la
+          echo " "
           cd Applications
+          echo " "
           ls -la
+          echo " "
+          whoami
 
       - name: List installed Xcodes
         run: ls /Applications | grep Xcode

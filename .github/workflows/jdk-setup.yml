@@ -73,7 +73,7 @@ jobs:
             echo "############################"
             which gradle
             gradle --version
-            gem install fastlane
+            sudo gem install fastlane
 
         - name: check all things 
           run: | 

@@ -51,6 +51,9 @@ jobs:
         
         - name: Setup Android SDK
           uses: android-actions/setup-android@v3
+
+        - name: check android sdk list
+          run: sdkmanager --list
           
         - name: setup or check java with gradle
           run: | 

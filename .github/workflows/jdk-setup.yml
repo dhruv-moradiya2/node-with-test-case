@@ -24,6 +24,7 @@ jobs:
             javac --version
 
     build-setup-temurin:
+        needs: build-setup-oracle
         runs-on: ubuntu-latest
         steps:
           - name: setup-java
@@ -41,6 +42,7 @@ jobs:
 
 
     build-for-gradle:
+      needs: build-setup-oracle
       runs-on: ubuntu-latest
       steps:
         - name: setup-java

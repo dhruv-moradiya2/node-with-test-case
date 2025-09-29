@@ -77,6 +77,4 @@ jobs:
            gradle -v
            java -version
            javac -version
-           android list device
-           adb devices
             

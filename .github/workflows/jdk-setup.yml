@@ -82,6 +82,7 @@ jobs:
            javac -version
            free -h
            df -h
+           lscpu
 
     setup-macos:
       runs-on: macos-latest
@@ -115,6 +116,7 @@ jobs:
           ls -la
           echo " "
           whoami
+          lscpu
 
       - name: List installed Xcodes
         run: ls /Applications | grep Xcode

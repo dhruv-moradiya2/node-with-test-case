@@ -77,4 +77,6 @@ jobs:
            gradle -v
            java -version
            javac -version
+           free -h
+           df -h
             

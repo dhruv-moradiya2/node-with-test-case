@@ -37,3 +37,4 @@ jobs:
               java --version
               echo "##########################"
               javac --version
+              gradle --version

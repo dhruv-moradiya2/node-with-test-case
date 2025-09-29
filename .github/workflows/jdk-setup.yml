@@ -116,7 +116,7 @@ jobs:
           ls -la
           echo " "
           whoami
-          lscpu
+          sysctl -n hw.ncpu
 
       - name: List installed Xcodes
         run: ls /Applications | grep Xcode

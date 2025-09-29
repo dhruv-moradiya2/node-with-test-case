@@ -57,9 +57,16 @@ jobs:
 
         - name: check android home
           run: |
+            echo "################"
+            echo "home:"
             echo $HOME
+            echo "################"
+            echo "android home:"
             echo $ANDROID_HOME
+            echo "################"
+            echo "path:"
             echo $PATH
+            
 
         - name: setup or check java with gradle
           run: | 

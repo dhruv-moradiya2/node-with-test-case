@@ -48,8 +48,10 @@ jobs:
           with:
             distribution: 'temurin'
             java-version: '17'
-
-
+        
+        - name: Setup Android SDK
+          uses: android-actions/setup-android@v3
+          
         - name: setup or check java with gradle
           run: | 
             java --version

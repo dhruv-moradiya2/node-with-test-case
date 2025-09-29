@@ -38,3 +38,21 @@ jobs:
               echo "##########################"
               javac --version
               gradle --version
+
+
+    build-for-gradle:
+      runs-on: ubuntu-latest
+      steps:
+        - name: setup-java
+          uses: actions/setup-java@v5
+          with:
+            distribution: 'temurin'
+            java-version: '17'
+
+
+        - name: setup or check java with gradle
+          run: | 
+            java --version
+            echo "############################"
+            gradle --version
+            

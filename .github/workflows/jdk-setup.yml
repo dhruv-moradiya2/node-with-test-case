@@ -71,4 +71,12 @@ jobs:
             echo "############################"
             which gradle
             gradle --version
+
+        - name: check all things 
+          run: | 
+           gradle -v
+           java -version
+           javac -version
+           android list device
+           adb devices
             

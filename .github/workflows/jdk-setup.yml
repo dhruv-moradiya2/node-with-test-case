@@ -84,7 +84,6 @@ jobs:
            df -h
 
     setup-macos:
-      needs: build-for-gradle
       runs-on: macos-latest
       steps:
       - name: Set up Node.js

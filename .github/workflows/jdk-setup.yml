@@ -127,7 +127,10 @@ jobs:
       #     xcode-version: latest-stable
 
       - name: Xcode Version
-        run: xcodebuild -version
-
+        run: |
+          xcodebuild -version
+          xcode-select --print-path
+          xcodebuild -list -project
+          
       - name: check xcode
         run: ls /Applications | grep Xcode

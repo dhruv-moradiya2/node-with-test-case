@@ -52,9 +52,6 @@ jobs:
         - name: Setup Android SDK
           uses: android-actions/setup-android@v3
 
-        - name: check android sdk list
-          run: sdkmanager --list
-
         - name: check android home
           run: |
             echo "################"
@@ -66,11 +63,12 @@ jobs:
             echo "################"
             echo "path:"
             echo $PATH
-            
 
         - name: setup or check java with gradle
           run: | 
             java --version
+            which java
             echo "############################"
+            which gradle
             gradle --version
             

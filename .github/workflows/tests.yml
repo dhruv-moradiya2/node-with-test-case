@@ -37,7 +37,6 @@ jobs:
           cat .env.production
 
       - name: check env value
-        if: github.ref == 'refs/heads/dev'
         env:
           DEV_ENV: ${{ secrets.DEV_ENV }}
           NODE_ENV: production

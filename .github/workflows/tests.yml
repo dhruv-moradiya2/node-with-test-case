@@ -36,6 +36,12 @@ jobs:
           echo "${{ secrets.DEV_ENV }}" > .env.production
           cat .env.production
 
+      - name: check env value
+        env:
+          DEV_ENV: ${{ secrets.DEV_ENV }}
+        run: |
+          echo "The value of DEV_ENV is: $DEV_ENV"
+
       # 5. Publish Jest JUnit report for dashboard
 #       - name: Publish Jest test results
 #         uses: dorny/test-reporter@v2

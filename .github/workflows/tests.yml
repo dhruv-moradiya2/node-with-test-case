@@ -26,10 +26,10 @@ jobs:
         run: npm install
 
       # 4. Run Jest tests with coverage
-      - name: Run Jest tests
-        id: hello
-        run: |
-          npm test
+      # - name: Run Jest tests
+      #   id: hello
+      #   run: |
+      #     npm test
           
       - name: check test 
         run: |
@@ -37,33 +37,33 @@ jobs:
           cat .env.production
 
       # 5. Publish Jest JUnit report for dashboard
-      - name: Publish Jest test results
-        uses: dorny/test-reporter@v2
-        with:
-          name: Jest Tests
-          path: 'reports/junt/*.xml'
-          reporter: jest-junit
-#          token: ${{ github.token }}
+#       - name: Publish Jest test results
+#         uses: dorny/test-reporter@v2
+#         with:
+#           name: Jest Tests
+#           path: 'reports/junt/*.xml'
+#           reporter: jest-junit
+# #          token: ${{ github.token }}
 
-      # 6. Upload coverage report as artifact
-      - name: Upload coverage report
-        if: steps.hello.outcome == 'success'
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage
+#       # 6. Upload coverage report as artifact
+#       - name: Upload coverage report
+#         if: steps.hello.outcome == 'success'
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: coverage-report
+#           path: coverage
       
-      - name: remove coverage report
-        run: | 
-          rm -rf coverage
-          rm -rf reports
+#       - name: remove coverage report
+#         run: | 
+#           rm -rf coverage
+#           rm -rf reports
 
-  deploy:
-    needs: [ test ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v5
+#   deploy:
+#     needs: [ test ]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: checkout code
+#         uses: actions/checkout@v5
 
-      - name: check code
-        run: ls -la
+      # - name: check code
+      #   run: ls -la

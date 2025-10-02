@@ -40,8 +40,10 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         env:
           DEV_ENV: ${{ secrets.DEV_ENV }}
+          NODE_ENV: production
         run: |
           echo "The value of DEV_ENV is: $DEV_ENV"
+          echo "The value of NODE_ENV is: $NODE_ENV"
 
       # 5. Publish Jest JUnit report for dashboard
 #       - name: Publish Jest test results

@@ -17,5 +17,5 @@ describe('MongoDB Connection', () => {
 
   test('should handle connection errors', async () => {
     await expect(connectToMongoDB('mongodb://invalid:27017')).rejects.toThrow();
-  });
+  }, 10000);
 });

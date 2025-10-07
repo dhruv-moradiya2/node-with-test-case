@@ -78,12 +78,13 @@ jobs:
 #           rm -rf coverage
 #           rm -rf reports
 
-#   deploy:
-#     needs: [ test ]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: checkout code
-#         uses: actions/checkout@v5
+  deploy:
+    needs: [ test ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v5
 
-      # - name: check code
-      #   run: ls -la
+      - uses: Kesin11/actions-timeline@v2
+        with:
+          show-waiting-runner: true

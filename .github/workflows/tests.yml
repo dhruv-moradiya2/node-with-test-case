@@ -17,6 +17,9 @@ jobs:
       # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v5
+        
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
 
       # 2. Setup Node.js
       - name: Setup Node.js
@@ -27,9 +30,7 @@ jobs:
       # 3. Install dependencies
       - name: Install dependencies
         run: npm install
-        
-      - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v4
+    
         
       # 4. Run Jest tests with coverage
       # - name: Run Jest tests

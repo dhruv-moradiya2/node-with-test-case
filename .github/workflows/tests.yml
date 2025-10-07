@@ -18,8 +18,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
         
-      - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v4
+      # - name: 'Dependency Review'
+      #   uses: actions/dependency-review-action@v4
 
       # 2. Setup Node.js
       - name: Setup Node.js

@@ -46,8 +46,8 @@ jobs:
 
       - name: check json file
         run: |
-          echo "${{ secrets.TEST_JSON }}" > test.json
-          cat test.json
+          echo "${{ secrets.TEST_JSON }}" > hello-com/test.json
+          cat hello-com/test.json
 
       # 5. Publish Jest JUnit report for dashboard
 #       - name: Publish Jest test results

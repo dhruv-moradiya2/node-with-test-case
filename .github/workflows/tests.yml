@@ -35,11 +35,14 @@ jobs:
         uses: supercharge/mongodb-github-action@1.12.0
         with:
           mongodb-version: latest
+      - run: npm test
+        env:
+          CI: true
 
       # 4. Run Jest tests with coverage
-      - name: Run Jest tests
-        id: hello
-        run: npm test
+      # - name: Run Jest tests
+      #   id: hello
+      #   run: npm test
 
       # - name: check test
       #   run: |

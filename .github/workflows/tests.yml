@@ -7,22 +7,8 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   test:
-    # services:
-    #   mongodb:
-    #     image: mongo:6
-    #     ports:
-    #       - 27017:27017
-    #     # Health check to ensure MongoDB is ready before tests run
-    #     options: >-
-    #       --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'" 
-    #       --health-interval 10s 
-    #       --health-timeout 5s 
-    #       --health-retries 5
     runs-on: ubuntu-latest
     steps:
       # 1. Checkout repository
@@ -36,99 +22,10 @@ jobs:
           destination: screenshot.png
           full-page: true
 
-      # - name: 'Dependency Review'
-      #   uses: actions/dependency-review-action@v4
-
-      # 2. Setup Node.js
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v5
-      #   with:
-      #     node-version: 22
-
-      # 3. Install dependencies
-      # - name: Install dependencies
-      #   run: npm install
-
-      # # - name: Start MongoDB
-      # #   uses: supercharge/mongodb-github-action@1.12.0
-      # #   with:
-      # #     mongodb-version: latest
-      # # - run: npm test
-      # #   env:
-      # #     CI: true
-
-      # # 4. Run Jest tests with coverage
-      # - name: Run Jest tests
-      #   id: hello
-      #   run: npm test
-
-      # - name: check test
-      #   run: |
-      #     echo "${{ secrets.DEV_ENV }}" > .env.production
-      #     cat .env.production
-
-      # - name: check env value
-      #   env:
-      #     DEV_ENV: ${{ secrets.DEV_ENV }}
-      #     NODE_ENV: production
-      #   run: |
-      #     echo "The value of DEV_ENV is: $DEV_ENV"
-      #     echo "The value of NODE_ENV is: $NODE_ENV"
-
-      # - name: check json file
-      #   run: |
-      #     echo "${{ secrets.TEST_JSON }}" > hello-com/test.json
-      #     cat hello-com/test.json
-
-      # 5. Publish Jest JUnit report for dashboard
-  #       - name: Publish Jest test results
-  #         uses: dorny/test-reporter@v2
-  #         with:
-  #           name: Jest Tests
-  #           path: 'reports/junt/*.xml'
-  #           reporter: jest-junit
-  # #          token: ${{ github.token }}
-
-  #       # 6. Upload coverage report as artifact
-  #       - name: Upload coverage report
-  #         if: steps.hello.outcome == 'success'
-  #         uses: actions/upload-artifact@v4
-  #         with:
-  #           name: coverage-report
-  #           path: coverage
-
-  #       - name: remove coverage report
-  #         run: |
-  #           rm -rf coverage
-  #           rm -rf reports
-
-  # build:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Git checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: Use Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: "22"
-
-  #     - name: Start MongoDB
-  #       uses: supercharge/mongodb-github-action@1.12.0
-  #       with:
-  #         mongodb-version: latest
-
-  #     - run: npm install
-
-  #     - run: npm test
-  #       env:
-  #         CI: true
-
   
 
   deploy:
-    needs: [test, build]
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: checkout code

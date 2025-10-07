@@ -17,7 +17,7 @@ jobs:
       # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v5
-        
+
       # - name: 'Dependency Review'
       #   uses: actions/dependency-review-action@v4
 
@@ -35,15 +35,13 @@ jobs:
         uses: supercharge/mongodb-github-action@1.12.0
         with:
           mongodb-version: latest
-    
-        
+
       # 4. Run Jest tests with coverage
-      # - name: Run Jest tests
-      #   id: hello
-      #   run: |
-      #     npm test
-          
-      # - name: check test 
+      - name: Run Jest tests
+        id: hello
+        run: npm test
+
+      # - name: check test
       #   run: |
       #     echo "${{ secrets.DEV_ENV }}" > .env.production
       #     cat .env.production
@@ -62,29 +60,29 @@ jobs:
       #     cat hello-com/test.json
 
       # 5. Publish Jest JUnit report for dashboard
-#       - name: Publish Jest test results
-#         uses: dorny/test-reporter@v2
-#         with:
-#           name: Jest Tests
-#           path: 'reports/junt/*.xml'
-#           reporter: jest-junit
-# #          token: ${{ github.token }}
+  #       - name: Publish Jest test results
+  #         uses: dorny/test-reporter@v2
+  #         with:
+  #           name: Jest Tests
+  #           path: 'reports/junt/*.xml'
+  #           reporter: jest-junit
+  # #          token: ${{ github.token }}
 
-#       # 6. Upload coverage report as artifact
-#       - name: Upload coverage report
-#         if: steps.hello.outcome == 'success'
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: coverage-report
-#           path: coverage
-      
-#       - name: remove coverage report
-#         run: | 
-#           rm -rf coverage
-#           rm -rf reports
+  #       # 6. Upload coverage report as artifact
+  #       - name: Upload coverage report
+  #         if: steps.hello.outcome == 'success'
+  #         uses: actions/upload-artifact@v4
+  #         with:
+  #           name: coverage-report
+  #           path: coverage
+
+  #       - name: remove coverage report
+  #         run: |
+  #           rm -rf coverage
+  #           rm -rf reports
 
   deploy:
-    needs: [ test ]
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: checkout code

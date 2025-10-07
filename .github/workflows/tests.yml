@@ -44,6 +44,11 @@ jobs:
           echo "The value of DEV_ENV is: $DEV_ENV"
           echo "The value of NODE_ENV is: $NODE_ENV"
 
+      - name: check json file
+        run: |
+          echo "${{ secrets.TEST_JSON }}" > test.json
+          cat test.json
+
       # 5. Publish Jest JUnit report for dashboard
 #       - name: Publish Jest test results
 #         uses: dorny/test-reporter@v2

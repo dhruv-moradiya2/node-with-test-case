@@ -7,6 +7,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -24,7 +27,10 @@ jobs:
       # 3. Install dependencies
       - name: Install dependencies
         run: npm install
-
+        
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        
       # 4. Run Jest tests with coverage
       # - name: Run Jest tests
       #   id: hello
@@ -44,10 +50,10 @@ jobs:
       #     echo "The value of DEV_ENV is: $DEV_ENV"
       #     echo "The value of NODE_ENV is: $NODE_ENV"
 
-      - name: check json file
-        run: |
-          echo "${{ secrets.TEST_JSON }}" > hello-com/test.json
-          cat hello-com/test.json
+      # - name: check json file
+      #   run: |
+      #     echo "${{ secrets.TEST_JSON }}" > hello-com/test.json
+      #     cat hello-com/test.json
 
       # 5. Publish Jest JUnit report for dashboard
 #       - name: Publish Jest test results

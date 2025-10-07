@@ -2,7 +2,7 @@ name: Awake Action
 on:
   schedule:
     # every 45 minutes, the steps below are triggered
-    - cron: "14 * * * *"
+    - cron: "10 * * * *"
 
 jobs:
   build:

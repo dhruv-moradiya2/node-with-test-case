@@ -2,8 +2,8 @@ name: Node.js CI with Jest
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    paths-ignore:
+      - README.md
     branches: [main]
   workflow_dispatch:
 

@@ -10,6 +10,3 @@
 
 
 ## new thing check
-
-
-hello gi

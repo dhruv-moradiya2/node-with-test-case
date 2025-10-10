@@ -15,11 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      # - name: Screenshot Website
-      #   uses: swinton/screenshot-website@v1.x
-      #   with:
-      #     source: https://nodko.onrender.com
-      #     destination: screenshot.png
+      - name: list all change
+        run: |
+          git diff --name-only
+          ls -la
 
   deploy:
     needs: [test]

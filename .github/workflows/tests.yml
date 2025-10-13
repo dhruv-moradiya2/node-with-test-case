@@ -21,6 +21,13 @@ jobs:
       - name: check tf version
         run: terraform version
 
+      - name: check script
+        uses: actions/github-script@v8
+        with:
+          script: |
+            console.log("hello");
+            console.log(context)
+
   deploy:
     needs: [test]
     runs-on: ubuntu-latest

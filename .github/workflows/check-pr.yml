@@ -5,7 +5,6 @@ on:
   pull_request:
     branches: [ main ]
 
-  # 2. Trigger for direct pushes to 'main' (happens after a PR is merged)
   push:
     branches: [ main ]
 
@@ -49,7 +48,7 @@ jobs:
         run: echo "Deploying to production..."
 
       - name: hello
-        run: echo "hello"
+        run: echo "hello world! check pr with push"
 
       - name: check context
         run: |

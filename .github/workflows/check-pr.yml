@@ -5,7 +5,6 @@ on:
   pull_request:
     branches: [ main ]
 
-  # 2. Trigger for direct pushes to 'main' (happens after a PR is merged)
   push:
     branches: [ main ]
 

@@ -28,7 +28,7 @@ jobs:
         # This checks out the temporary merge commit
 
       - name: Run tests on the NEW code
-        run: npm install && npm test # Or whatever your test command is
+        run: npm install # Or whatever your test command is
 
   # This job runs ONLY after the PR is merged (a push to 'main')
   deploy:

@@ -34,8 +34,7 @@ jobs:
   deploy:
     # Condition to ensure this job only runs on the 'push' event to 'main'
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    needs: test-and-build # This is illustrative; in reality, they are separate workflow runs
+    runs-on: ubuntu-latest # This is illustrative; in reality, they are separate workflow runs
     steps:
       - name: Print context
         run: |
@@ -51,3 +50,9 @@ jobs:
 
       - name: hello
         run: echo "hello world! check pr with push"
+        run: echo "hello"
+
+      - name: check context
+        run: |
+          echo "This is a post-merge deployment."
+          echo "Ref: ${{ github.ref }}" # Will be refs/heads/main

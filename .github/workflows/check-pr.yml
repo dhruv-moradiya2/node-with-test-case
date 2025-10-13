@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  # 1. Trigger for Pull Requests targeting 'main'
+  pull_request:
+    branches: [ main ]
+
+  # 2. Trigger for direct pushes to 'main' (happens after a PR is merged)
+  push:
+    branches: [ main ]
+
+jobs:
+  # This job runs ONLY for the Pull Request
+  test-and-build:
+    # Condition to ensure this job only runs on the 'pull_request' event
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print context
+        run: |
+          echo "This is a PR check."
+          echo "Ref: ${{ github.ref }}"           # Will be refs/pull/123/merge
+          echo "Source Branch: ${{ github.head_ref }}" # Will be 'dev'
+          echo "Target Branch: ${{ github.base_ref }}" # Will be 'main'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # This checks out the temporary merge commit
+
+      - name: Run tests on the NEW code
+        run: npm install && npm test # Or whatever your test command is
+
+  # This job runs ONLY after the PR is merged (a push to 'main')
+  deploy:
+    # Condition to ensure this job only runs on the 'push' event to 'main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: test-and-build # This is illustrative; in reality, they are separate workflow runs
+    steps:
+      - name: Print context
+        run: |
+          echo "This is a post-merge deployment."
+          echo "Ref: ${{ github.ref }}" # Will be refs/heads/main
+
+      - name: Checkout code from 'main'
+        uses: actions/checkout@v4
+        # This checks out the latest code from the main branch
+
+      - name: Deploy to production
+        run: echo "Deploying to production..."

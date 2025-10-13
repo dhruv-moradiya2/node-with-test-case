@@ -50,4 +50,4 @@ jobs:
         run: echo "Deploying to production..."
 
       - name: hello
-        run: echo "hello"
+        run: echo "hello world! check pr with push"

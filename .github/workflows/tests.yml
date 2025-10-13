@@ -26,7 +26,8 @@ jobs:
         with:
           script: |
             console.log("hello");
-            console.log(context)
+            console.log("");
+            console.log(context);
 
   deploy:
     needs: [test]

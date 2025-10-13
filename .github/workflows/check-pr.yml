@@ -48,3 +48,6 @@ jobs:
 
       - name: Deploy to production
         run: echo "Deploying to production..."
+
+      - name: hello
+        run: echo "hello"

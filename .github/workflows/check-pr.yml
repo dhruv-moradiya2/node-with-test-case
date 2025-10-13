@@ -51,3 +51,8 @@ jobs:
 
       - name: hello
         run: echo "hello"
+
+      - name: check context
+        run: |
+          echo "This is a post-merge deployment."
+          echo "Ref: ${{ github.ref }}" # Will be refs/heads/main

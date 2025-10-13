@@ -15,8 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: list all change
-        run: ls -la
+      - name: check tf 
+        uses: hashicorp/setup-terraform@v3
+
+      - name: check tf version
+        run: terraform version
 
   deploy:
     needs: [test]

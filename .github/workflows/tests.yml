@@ -29,13 +29,13 @@ jobs:
       - name: check tf version
         run: terraform version
 
-      - name: check script
-        uses: actions/github-script@v8
-        with:
-          script: |
-            console.log("hello");
-            console.log("");
-            console.log(context);
+      # - name: check script
+      #   uses: actions/github-script@v8
+      #   with:
+      #     script: |
+      #       console.log("hello");
+      #       console.log("");
+      #       console.log(context);
 
   deploy:
     needs: [test]

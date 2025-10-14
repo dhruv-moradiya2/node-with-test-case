@@ -15,6 +15,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          
+      - name: install dependency
+        run: npm install
+      
       - name: check tf
         uses: hashicorp/setup-terraform@v3
 

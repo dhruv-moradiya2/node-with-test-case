@@ -14,10 +14,6 @@ jobs:
       # 1. Checkout repository
       - name: Checkout code
         uses: actions/checkout@v5
-
-      - name: check cache
-        run: |
-          ls -la /opt/hostedtoolcache/node/22.20.0/x64
           
       - name: setup node
         uses: actions/setup-node@v6

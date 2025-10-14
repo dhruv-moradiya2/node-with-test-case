@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: check cache
-        run: ls -la /opt/hostedtoolcache/
+        run: ls -la /opt/hostedtoolcache/node/
 
       - name: setup node
         uses: actions/setup-node@v6

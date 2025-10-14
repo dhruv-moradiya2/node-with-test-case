@@ -1,49 +1,121 @@
-name: Node.js CI with Jest
+name: CI/CD Pipeline Frontend-Web
 
 on:
   push:
-    paths-ignore:
-      - README.md
-    branches: [main]
+    branches: [main, development]
   workflow_dispatch:
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout repository
+      # step 1: checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v5
-          
-      - name: setup node
-        uses: actions/setup-node@v6
+
+      # step 2: set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
-          node-version: 22
-          
-      - name: install dependency
-        run: npm install
+          node-version: '18'
+
+      # step 3: install dependencies
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
       
-      - name: check tf
-        uses: hashicorp/setup-terraform@v3
+      - name: Using sed change value for production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Changing config for production"
+          cd src/config
+          sed -i 's|https://dev.resideguinee.com/api/%7Chttps://resideguinee.com/api/%7Cg' config.js
+          cd ../..
+      
+      # - name: set env value for according to branch and deploy path
+      #   run: |
+      #     if [[ "${{ github.ref }}" == "refs/heads/development" ]]; then
+      #         echo "add development env"
+      #         echo "${{ secrets.DEV_ENV }}" >> .env
+      #         echo "Deploying to development environment"
+      #         echo "DEPLOY_PATH=/home/frontend/dev" >> $GITHUB_ENV
+      #       elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+      #         echo "add production env"
+      #         echo "${{ secrets.PROD_ENV }}" >> .env
+      #         echo "Deploying to production environment"
+      #         echo "DEPLOY_PATH=/home/frontend/dist" >> $GITHUB_ENV
+      #       else
+      #         echo "No deployment for this branch"
+      #         exit 1
+      #       fi
 
-      - name: check tf version
-        run: terraform version
+      # step 4: build the project
+      - name: Build project
+        run: | 
+          npm run build
+          if [ ! -d "dist" ]; then
+            echo "Build failed: 'dist' directory not found!"
+            exit 1
+          fi
 
-      # - name: check script
-      #   uses: actions/github-script@v8
+      # step 5: run tests and add trivy for security scanning
+      # - name: Run tests
+      #   id: coverage-check
+      #   run: npm test --coverage
+      
+      # - name: Upload coverage report
+      #   if: steps.coverage-check.outcome == 'success'
+      #   uses: actions/upload-artifact@v4
       #   with:
-      #     script: |
-      #       console.log("hello");
-      #       console.log("");
-      #       console.log(context);
+      #     name: test-coverage-report
+      #     path: coverage
 
-  deploy:
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v5
-
-      - uses: Kesin11/actions-timeline@v2
+      # - name: remove .env file
+      #   run: rm -f .env
+      
+      - name: Scan project with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
         with:
-          show-waiting-runner: true
+            scan-type: 'fs'
+            scan-ref: '.'
+            format: 'table'
+            ignore-unfixed: true
+            vuln-type: 'os,library'
+            severity: 'HIGH,CRITICAL'
+            exit-code: '0'
+
+      # step 6: set deploy path based on branch
+      - name: set deploy path
+        run: |
+            echo "deploy set path"
+            if [[ "${{ github.ref }}" == "refs/heads/development" ]]; then
+              echo "Deploying to development environment"
+              echo "DEPLOY_PATH=/home/frontend/dev" >> $GITHUB_ENV
+            elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              echo "Deploying to production environment"
+              echo "DEPLOY_PATH=/home/frontend/dist" >> $GITHUB_ENV
+            else
+              echo "No deployment for this branch"
+              exit 1
+            fi
+        
+      # step 7: copy file using rsync and deploy to the server    
+      - name: Deploy with rsync
+        uses: burnett01/rsync-deployments@7.1.0
+        with:
+          switches: -avz --delete
+          path: dist/
+          remote_path: ${{ env.DEPLOY_PATH }}
+          remote_host: ${{ secrets.EC2_HOST }}
+          remote_user: ${{ secrets.EC2_USERNAME }}
+          remote_key: ${{ secrets.EC2_SSH_KEY }}
+
+      # step 9: restart the nginx server
+      - name: Restart Nginx Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo systemctl restart nginx
+            chmod -R 775 ${{ env.DEPLOY_PATH }}

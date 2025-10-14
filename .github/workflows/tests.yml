@@ -15,6 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: check cache
+        run: ls -la /opt/hostedtoolcache/
+
       - name: setup node
         uses: actions/setup-node@v6
         with:

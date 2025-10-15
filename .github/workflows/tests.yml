@@ -7,15 +7,15 @@ on:
 
 jobs:
   localstack-action-test:
-    localstack:
+    services:
+      localstack:
         image: localstack/localstack
         ports:
           - 4566:4566
           - 4510-4559:4510-4559
         options: >-
-          --name localstack
           -v /var/run/docker.sock:/var/run/docker.sock
-          
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -33,4 +33,3 @@ jobs:
           awslocal s3 mb s3://test
           awslocal s3 ls
           echo "Test Execution complete!"
-

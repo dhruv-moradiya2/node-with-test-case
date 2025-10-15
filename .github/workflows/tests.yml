@@ -1,4 +1,4 @@
-name: CI/CD Pipeline Frontend-Web
+name: LocalStack Test
 
 on:
   push:
@@ -6,116 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  localstack-action-test:
+    name: "Test LocalStack GitHub Action"
     runs-on: ubuntu-latest
     steps:
-      # step 1: checkout the code from the repository
-      - name: Checkout code
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v3
 
-      # step 2: set up Node.js environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      - name: Start LocalStack
+        uses: LocalStack/setup-localstack@v0.2.3
         with:
-          node-version: '18'
+          image-tag: 'latest'
+          install-awslocal: 'true'
 
-      # step 3: install dependencies
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-      
-      - name: Using sed change value for production
-        if: github.ref == 'refs/heads/main'
+      - name: Run Tests against LocalStack
         run: |
-          echo "Changing config for production"
-          cd src/config
-          sed -i 's|https://dev.resideguinee.com/api/%7Chttps://resideguinee.com/api/%7Cg' config.js
-          cd ../..
-      
-      # - name: set env value for according to branch and deploy path
-      #   run: |
-      #     if [[ "${{ github.ref }}" == "refs/heads/development" ]]; then
-      #         echo "add development env"
-      #         echo "${{ secrets.DEV_ENV }}" >> .env
-      #         echo "Deploying to development environment"
-      #         echo "DEPLOY_PATH=/home/frontend/dev" >> $GITHUB_ENV
-      #       elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-      #         echo "add production env"
-      #         echo "${{ secrets.PROD_ENV }}" >> .env
-      #         echo "Deploying to production environment"
-      #         echo "DEPLOY_PATH=/home/frontend/dist" >> $GITHUB_ENV
-      #       else
-      #         echo "No deployment for this branch"
-      #         exit 1
-      #       fi
+          awslocal s3 mb s3://test
+          awslocal s3 ls
+          echo "Test Execution complete!"
 
-      # step 4: build the project
-      - name: Build project
-        run: | 
-          npm run build
-          if [ ! -d "dist" ]; then
-            echo "Build failed: 'dist' directory not found!"
-            exit 1
-          fi
-
-      # step 5: run tests and add trivy for security scanning
-      # - name: Run tests
-      #   id: coverage-check
-      #   run: npm test --coverage
-      
-      # - name: Upload coverage report
-      #   if: steps.coverage-check.outcome == 'success'
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: test-coverage-report
-      #     path: coverage
-
-      # - name: remove .env file
-      #   run: rm -f .env
-      
-      - name: Scan project with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-            scan-type: 'fs'
-            scan-ref: '.'
-            format: 'table'
-            ignore-unfixed: true
-            vuln-type: 'os,library'
-            severity: 'HIGH,CRITICAL'
-            exit-code: '0'
-
-      # step 6: set deploy path based on branch
-      - name: set deploy path
-        run: |
-            echo "deploy set path"
-            if [[ "${{ github.ref }}" == "refs/heads/development" ]]; then
-              echo "Deploying to development environment"
-              echo "DEPLOY_PATH=/home/frontend/dev" >> $GITHUB_ENV
-            elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              echo "Deploying to production environment"
-              echo "DEPLOY_PATH=/home/frontend/dist" >> $GITHUB_ENV
-            else
-              echo "No deployment for this branch"
-              exit 1
-            fi
-        
-      # step 7: copy file using rsync and deploy to the server    
-      - name: Deploy with rsync
-        uses: burnett01/rsync-deployments@7.1.0
-        with:
-          switches: -avz --delete
-          path: dist/
-          remote_path: ${{ env.DEPLOY_PATH }}
-          remote_host: ${{ secrets.EC2_HOST }}
-          remote_user: ${{ secrets.EC2_USERNAME }}
-          remote_key: ${{ secrets.EC2_SSH_KEY }}
-
-      # step 9: restart the nginx server
-      - name: Restart Nginx Server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            sudo systemctl restart nginx
-            chmod -R 775 ${{ env.DEPLOY_PATH }}

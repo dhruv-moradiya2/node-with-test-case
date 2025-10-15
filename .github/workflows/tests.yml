@@ -22,6 +22,7 @@ jobs:
         run: |
           docker images
           docker ps -a
+          docker inspect localstack-main
           awslocal s3 mb s3://test
           awslocal s3 ls
           echo "Test Execution complete!"

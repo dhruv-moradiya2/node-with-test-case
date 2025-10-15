@@ -7,22 +7,29 @@ on:
 
 jobs:
   localstack-action-test:
-    name: "Test LocalStack GitHub Action"
+    localstack:
+        image: localstack/localstack
+        ports:
+          - 4566:4566
+          - 4510-4559:4510-4559
+        options: >-
+          --name localstack
+          -v /var/run/docker.sock:/var/run/docker.sock
+          
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Start LocalStack
-        uses: LocalStack/setup-localstack@v0.2.3
-        with:
-          image-tag: 'latest'
-          install-awslocal: 'true'
+      # - name: Start LocalStack
+      #   uses: LocalStack/setup-localstack@v0.2.3
+      #   with:
+      #     image-tag: 'latest'
+      #     install-awslocal: 'true'
 
       - name: Run Tests against LocalStack
         run: |
           docker images
           docker ps -a
-          docker inspect localstack-main
           awslocal s3 mb s3://test
           awslocal s3 ls
           echo "Test Execution complete!"
